@@ -1,25 +1,26 @@
-﻿@*
+﻿@{
     ViewData["Title"] = "IngresarCodigo";
-*@
+}
+
 <!DOCTYPE html>
-<html lang="es" title="@ViewData["Title"]">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
     <link rel="stylesheet" href="/css/IngresarCodigo.css">
 </head>
 <body>
     <div class="container">
         <h1>Ingresar el código de seguridad</h1>
         <p>Ingrese el código de 6 dígitos enviado a su número de teléfono.</p>
-        <form id="formularioRecuperacion" action="/ingresarCodigo" method="POST">
+        <form id="formularioCodigo" asp-controller="Home" asp-action="IngresarCodigo" method="POST">
             <input type="number" placeholder="Ingrese código" id="codigo" name="codigo" required minlength="6" maxlength="6">
             <div class="botones">
-                <a href="iniciosesion.html#Login" class="link">Cancelar</a>
-                <button type="submit" id="enviarCodigo" class="link">continuar</button>
+                <a href="@Url.Action("iniciosesion", "Home")#Login" class="link">Cancelar</a>
+                <button type="submit" id="validarCodigo" class="link">continuar</button>
             </div>
         </form>
-
     </div>
 </body>
 </html>

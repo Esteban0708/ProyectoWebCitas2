@@ -12,17 +12,14 @@
     <div class="container">
         <h1>Recuperar contraseña</h1>
         <p>Ingresa el número de celular con el que se registró para recuperar tu cuenta.</p>
-        <!-- Eliminado el action y method de la etiqueta form -->
-        <form id="formularioRecuperacion" method="POST">
+        <form asp-controller="Home" asp-action="olvidocontraseña" method="POST">
             <input type="tel" placeholder="+573102268473" id="celular" name="phoneNumber" required pattern="^(\+57|031|032|033|034|035|036|037|038|039)?[0-9]{10}$">
             <div class="botones">
-                <a href="@Url.Action("iniciosesion", "Home")#Login"  class="link">Cancelar</a>
+                <a href="@Url.Action("iniciosesion", "Home")#Login" class="link">Cancelar</a>
                 <!-- El botón mantiene su tipo como submit, para que pueda disparar el evento de submit del formulario -->
                 <button type="submit" id="enviarCodigo" class="link">Enviar Código</button>
             </div>
         </form>
-
     </div>
-    <script src="/js/enviarCodigo.js"></script>
 </body>
 </html>
