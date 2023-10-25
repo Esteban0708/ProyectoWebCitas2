@@ -22,4 +22,20 @@ public partial class Usuario
     public DateTime FechaNacimiento { get; set; }
 
     public string Estado { get; set; } = null!;
+
+    public int FkGenero { get; set; }
+
+    public int FkDocumento { get; set; }
+
+    public int FkCiudad { get; set; }
+
+    public int FkRol { get; set; }
+
+    public virtual Ciudad FkCiudadNavigation { get; set; } = null!;
+
+    public virtual Documento FkDocumentoNavigation { get; set; } = null!;
+
+    public virtual Genero FkGeneroNavigation { get; set; } = null!;
+
+    public virtual Rol FkRolNavigation { get; set; } = null!;
 }

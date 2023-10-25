@@ -15,6 +15,12 @@ public partial class ProyectoCitasContext : DbContext
     {
     }
 
+    public virtual DbSet<Ciudad> Ciudads { get; set; }
+
+    public virtual DbSet<Departamento> Departamentos { get; set; }
+
+    public virtual DbSet<Documento> Documentos { get; set; }
+
     public virtual DbSet<Genero> Generos { get; set; }
 
     public virtual DbSet<Permiso> Permisos { get; set; }
@@ -29,13 +35,62 @@ public partial class ProyectoCitasContext : DbContext
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
         => optionsBuilder.UseSqlServer("server=localhost;database=ProyectoCitas;integrated security=true;TrustServerCertificate=True;");
 
-
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<Ciudad>(entity =>
+        {
+            entity.HasKey(e => e.IdCiudad);
+
+            entity.ToTable("CIUDAD");
+
+            entity.Property(e => e.IdCiudad)
+                .ValueGeneratedNever()
+                .HasColumnName("id_ciudad");
+            entity.Property(e => e.FkDepartamento).HasColumnName("FK_Departamento");
+            entity.Property(e => e.Nombre)
+                .HasMaxLength(80)
+                .IsUnicode(false)
+                .HasColumnName("nombre");
+
+            entity.HasOne(d => d.FkDepartamentoNavigation).WithMany(p => p.Ciudads)
+                .HasForeignKey(d => d.FkDepartamento)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_DEPARTAMENTO");
+        });
+
+        modelBuilder.Entity<Departamento>(entity =>
+        {
+            entity.HasKey(e => e.IdDepartamento).HasName("PK_DEPATAMENTO");
+
+            entity.ToTable("DEPARTAMENTO");
+
+            entity.Property(e => e.IdDepartamento)
+                .ValueGeneratedNever()
+                .HasColumnName("id_departamento");
+            entity.Property(e => e.Nombre)
+                .HasMaxLength(80)
+                .IsUnicode(false)
+                .HasColumnName("nombre");
+        });
+
+        modelBuilder.Entity<Documento>(entity =>
+        {
+            entity.HasKey(e => e.IdDocumento).HasName("PK_Documento");
+
+            entity.ToTable("DOCUMENTO");
+
+            entity.Property(e => e.IdDocumento)
+                .ValueGeneratedNever()
+                .HasColumnName("id_documento");
+            entity.Property(e => e.Tipo)
+                .HasMaxLength(45)
+                .IsUnicode(false)
+                .HasColumnName("tipo");
+        });
+
         modelBuilder.Entity<Genero>(entity =>
         {
-            entity.HasKey(e => e.IdGenero).HasName("PK__GENERO__99A8E4F9E7DE1364");
+            entity.HasKey(e => e.IdGenero).HasName("PK_Genero");
 
             entity.ToTable("GENERO");
 
@@ -50,7 +105,7 @@ public partial class ProyectoCitasContext : DbContext
 
         modelBuilder.Entity<Permiso>(entity =>
         {
-            entity.HasKey(e => e.IdPermiso).HasName("PK__PERMISO__228F224F4ADE04DF");
+            entity.HasKey(e => e.IdPermiso).HasName("PK_permiso");
 
             entity.ToTable("PERMISO");
 
@@ -69,7 +124,7 @@ public partial class ProyectoCitasContext : DbContext
 
         modelBuilder.Entity<PermisoRol>(entity =>
         {
-            entity.HasKey(e => new { e.IdPermiso, e.IdRol }).HasName("PK__PERMISO___3424E9117E565DCF");
+            entity.HasKey(e => new { e.IdPermiso, e.IdRol }).HasName("PK_PermisoRol");
 
             entity.ToTable("PERMISO_ROL");
 
@@ -83,15 +138,15 @@ public partial class ProyectoCitasContext : DbContext
 
         modelBuilder.Entity<Rol>(entity =>
         {
-            entity
-                .HasNoKey()
-                .ToTable("ROL");
+            entity.HasKey(e => e.IdRol);
 
+            entity.ToTable("ROL");
+
+            entity.Property(e => e.IdRol).HasColumnName("id_rol");
             entity.Property(e => e.Estado)
                 .HasMaxLength(1)
                 .IsUnicode(false)
                 .HasColumnName("estado");
-            entity.Property(e => e.IdRol).HasColumnName("id_rol");
             entity.Property(e => e.Nombre)
                 .HasMaxLength(45)
                 .IsUnicode(false)
@@ -130,15 +185,38 @@ public partial class ProyectoCitasContext : DbContext
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime")
                 .HasColumnName("fecha_registro");
+            entity.Property(e => e.FkCiudad).HasColumnName("FK_Ciudad");
+            entity.Property(e => e.FkDocumento).HasColumnName("Fk_Documento");
+            entity.Property(e => e.FkGenero).HasColumnName("Fk_genero");
+            entity.Property(e => e.FkRol).HasColumnName("FK_rol");
             entity.Property(e => e.Nombres)
                 .HasMaxLength(50)
                 .IsUnicode(false)
                 .HasColumnName("nombres");
-            entity.Property(e => e.Nuip).HasColumnName("nuip");
             entity.Property(e => e.Telefono)
                 .HasMaxLength(20)
                 .IsUnicode(false)
                 .HasColumnName("telefono");
+
+            entity.HasOne(d => d.FkCiudadNavigation).WithMany(p => p.Usuarios)
+                .HasForeignKey(d => d.FkCiudad)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_CIUDAD");
+
+            entity.HasOne(d => d.FkDocumentoNavigation).WithMany(p => p.Usuarios)
+                .HasForeignKey(d => d.FkDocumento)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Documento");
+
+            entity.HasOne(d => d.FkGeneroNavigation).WithMany(p => p.Usuarios)
+                .HasForeignKey(d => d.FkGenero)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_GENERO");
+
+            entity.HasOne(d => d.FkRolNavigation).WithMany(p => p.Usuarios)
+                .HasForeignKey(d => d.FkRol)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Rol");
         });
 
         OnModelCreatingPartial(modelBuilder);

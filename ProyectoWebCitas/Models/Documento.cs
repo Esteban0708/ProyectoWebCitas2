@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 namespace ProyectoWebCitas.Models;
 
-public partial class Genero
+public partial class Documento
 {
-    public int IdGenero { get; set; }
+    public int IdDocumento { get; set; }
 
-    public string Genero1 { get; set; } = null!;
+    public string Tipo { get; set; } = null!;
 
     public virtual ICollection<Usuario> Usuarios { get; set; } = new List<Usuario>();
 }

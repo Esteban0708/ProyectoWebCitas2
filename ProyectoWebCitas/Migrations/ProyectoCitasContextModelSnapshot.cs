@@ -87,21 +87,26 @@ namespace ProyectoWebCitas.Migrations
                     b.HasKey("IdPermiso", "IdRol")
                         .HasName("PK__PERMISO___3424E9117E565DCF");
 
+                    b.HasIndex("IdRol");
+
                     b.ToTable("PERMISO_ROL", (string)null);
                 });
 
             modelBuilder.Entity("ProyectoWebCitas.Models.Rol", b =>
                 {
+                    b.Property<int>("IdRol")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("id_rol");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdRol"));
+
                     b.Property<string>("Estado")
                         .IsRequired()
                         .HasMaxLength(1)
                         .IsUnicode(false)
                         .HasColumnType("varchar(1)")
                         .HasColumnName("estado");
-
-                    b.Property<int>("IdRol")
-                        .HasColumnType("int")
-                        .HasColumnName("id_rol");
 
                     b.Property<string>("Nombre")
                         .IsRequired()
@@ -110,11 +115,17 @@ namespace ProyectoWebCitas.Migrations
                         .HasColumnType("varchar(45)")
                         .HasColumnName("nombre");
 
+                    b.HasKey("IdRol");
+
                     b.ToTable("ROL", (string)null);
                 });
 
             modelBuilder.Entity("ProyectoWebCitas.Models.Usuario", b =>
                 {
+                    b.Property<long>("Nuip")
+                        .HasColumnType("bigint")
+                        .HasColumnName("nuip");
+
                     b.Property<string>("Apellidos")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -153,16 +164,15 @@ namespace ProyectoWebCitas.Migrations
                         .HasColumnName("fecha_registro")
                         .HasDefaultValueSql("(getdate())");
 
+                    b.Property<int>("IdRol")
+                        .HasColumnType("int");
+
                     b.Property<string>("Nombres")
                         .IsRequired()
                         .HasMaxLength(50)
                         .IsUnicode(false)
                         .HasColumnType("varchar(50)")
                         .HasColumnName("nombres");
-
-                    b.Property<long>("Nuip")
-                        .HasColumnType("bigint")
-                        .HasColumnName("nuip");
 
                     b.Property<string>("Telefono")
                         .IsRequired()
@@ -171,7 +181,54 @@ namespace ProyectoWebCitas.Migrations
                         .HasColumnType("varchar(20)")
                         .HasColumnName("telefono");
 
+                    b.HasKey("Nuip")
+                        .HasName("PK_nuip");
+
+                    b.HasIndex("IdRol");
+
                     b.ToTable("USUARIO", (string)null);
+                });
+
+            modelBuilder.Entity("ProyectoWebCitas.Models.PermisoRol", b =>
+                {
+                    b.HasOne("ProyectoWebCitas.Models.Permiso", "Permiso")
+                        .WithMany("PermisoRoles")
+                        .HasForeignKey("IdPermiso")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ProyectoWebCitas.Models.Rol", "Rol")
+                        .WithMany("PermisoRoles")
+                        .HasForeignKey("IdRol")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Permiso");
+
+                    b.Navigation("Rol");
+                });
+
+            modelBuilder.Entity("ProyectoWebCitas.Models.Usuario", b =>
+                {
+                    b.HasOne("ProyectoWebCitas.Models.Rol", "Rol")
+                        .WithMany("Usuarios")
+                        .HasForeignKey("IdRol")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Rol");
+                });
+
+            modelBuilder.Entity("ProyectoWebCitas.Models.Permiso", b =>
+                {
+                    b.Navigation("PermisoRoles");
+                });
+
+            modelBuilder.Entity("ProyectoWebCitas.Models.Rol", b =>
+                {
+                    b.Navigation("PermisoRoles");
+
+                    b.Navigation("Usuarios");
                 });
 #pragma warning restore 612, 618
         }
