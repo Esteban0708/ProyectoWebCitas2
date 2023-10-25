@@ -2,6 +2,7 @@
 using ProyectoWebCitas.Models;
 using System.Diagnostics;
 
+
 namespace ProyectoWebCitas.Controllers
 {
     public class HomeController : Controller
@@ -17,11 +18,20 @@ namespace ProyectoWebCitas.Controllers
         {
             return View();
         }
-
-        public IActionResult Privacy()
+        public IActionResult iniciosesion()
         {
             return View();
         }
+        public IActionResult olvidocontraseña()
+        {
+            return View();
+        }
+
+        public IActionResult IngresarCodigo()
+        {
+            return View();
+        }
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

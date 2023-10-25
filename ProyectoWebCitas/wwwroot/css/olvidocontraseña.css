@@ -1,0 +1,79 @@
+﻿* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    font-family: sans-serif;
+}
+
+body {
+    background-image: url("/imagenes/Agenda.gif");
+    background-repeat: repeat;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+.container {
+    background-color: white;
+    width: 600px;
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+    margin: 0;
+    height: 250px; /* Asegura que el cuerpo ocupe toda la altura de la pantalla */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    justify-content: center;
+}
+
+    .container h1 {
+        font-size: 30px;
+        padding: 10px;
+        text-align: center;
+    }
+
+    .container p {
+        font-size: 15px;
+        text-align: center;
+        padding: 20px;
+    }
+
+.botones {
+    background-color: white;
+    width: 250px;
+    height: 60px;
+    margin: 0;
+    position: absolute;
+    top: 80%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex; /* Añadir Flexbox */
+    justify-content: center; /* Alinear los elementos hijos horizontalmente al centro */
+    align-items: center; /* Alinear los elementos hijos verticalmente al centro */
+    gap: 10px;
+}
+
+.link {
+    color: black;
+    padding: 10px 30px;
+    text-decoration: none;
+    font-size: 15px;
+    letter-spacing: 0.12cm;
+    border-radius: 20px;
+    transition: 0.3s;
+}
+
+    .link:hover {
+        background: rgba(21, 0, 255, 0.774);
+        color: #fff;
+    }
+
+.container #celular {
+    display: flex;
+    position: relative;
+    left: 47px;
+    height: 30px;
+    width: 250px;
+    height: 30px;
+    top: 10px;
+}

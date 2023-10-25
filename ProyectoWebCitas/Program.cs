@@ -6,17 +6,19 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
- builder.Services.AddDbContext<ProyectoCitasContext>(options =>
-         options.UseSqlServer(builder.Configuration.GetConnectionString("conexion")));
+// Add DbContext with the connection string from configuration.
+builder.Services.AddDbContext<ProyectoCitasContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("conexion")));
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
+
+// Use error handling for non-development environments.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
+    app.UseHsts();  // Only use HSTS in production scenarios.
 }
 
 app.UseHttpsRedirection();
@@ -24,10 +26,16 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+// Authorization should be after UseRouting and before UseEndpoints.
 app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=iniciosesion}/{id?}");
+
 
 app.Run();
